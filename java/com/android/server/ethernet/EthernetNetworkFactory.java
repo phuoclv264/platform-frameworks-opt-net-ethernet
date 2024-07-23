@@ -214,7 +214,7 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (network != null) {
             network.setIpConfig(ipConfiguration);
         }
-        Log.i(TAG, "KrisLee updateIpConfiguration, iface: " + ifaceName + ", ipConfiguration: " + ipConfiguration);
+        Log.i(TAG, "KrisLee updateIpConfiguration, iface: " + iface + ", ipConfiguration: " + ipConfiguration);
     }
 
     private NetworkInterfaceState networkForRequest(NetworkRequest request) {
