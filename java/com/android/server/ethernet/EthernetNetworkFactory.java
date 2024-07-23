@@ -106,6 +106,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (++network.refCount == 1) {
             network.start();
         }
+
+        Log.i(TAG, "KrisLee needNetworkFor, networkRequest: " + networkRequest);
     }
 
     @Override
@@ -119,6 +121,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (--network.refCount == 0) {
             network.stop();
         }
+
+        Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest);
     }
 
     /**
@@ -210,6 +214,7 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (network != null) {
             network.setIpConfig(ipConfiguration);
         }
+        Log.i(TAG, "KrisLee updateIpConfiguration, iface: " + ifaceName + ", ipConfiguration: " + ipConfiguration);
     }
 
     private NetworkInterfaceState networkForRequest(NetworkRequest request) {
