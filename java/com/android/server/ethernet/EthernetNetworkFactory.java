@@ -120,13 +120,17 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
         if (--network.refCount == 0) {
             network.stop();
+
+            String iName = network.getInterfaceName();
+
+            if (iName.contains("eth") && ++network.refCount == 1) {
+                network.start();
+
+                Log.i(TAG, "KrisLee restart network after release network, interface name: " + iName);
+            }
         }
-
-        String iName = network.getInterfaceName();
-
-        if (iName.contains("eth")) network.restart();
-
-        Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest + ", interface name: " + iName);
+        
+        Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest);
     }
 
     /**
