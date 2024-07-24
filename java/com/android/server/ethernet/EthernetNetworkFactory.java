@@ -480,12 +480,14 @@ public class EthernetNetworkFactory extends NetworkFactory {
             if (mLinkProperties != null) {
                 String ifaceName = mLinkProperties.getInterfaceName();
                 if (ifaceName != null) {
+                    Log.i(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned " + ifaceName);
+
                     return ifaceName;
                 } else {
-                    Log.w(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned null");
+                    Log.i(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned null");
                 }
             } else {
-                Log.w(TAG, "getInterfaceName: mLinkProperties is null");
+                Log.i(TAG, "getInterfaceName: mLinkProperties is null");
             }
             return "";
         }
