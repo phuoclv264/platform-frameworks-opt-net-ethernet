@@ -122,7 +122,11 @@ public class EthernetNetworkFactory extends NetworkFactory {
             network.stop();
         }
 
-        Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest);
+        String iName = network.getInterfaceName();
+
+        if (iName.contains("eth")) network.restart();
+
+        Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest + ", interface name: " + iName);
     }
 
     /**
@@ -464,6 +468,14 @@ public class EthernetNetworkFactory extends NetworkFactory {
             }
             return 0;
         }
+
+        String getInterfaceName() {
+            if (mLinkProperties != null) {
+                return mLinkProperties.getInterfaceName();
+            }
+
+            return "";
+        } 
 
         private void start() {
             Log.i(TAG, "KrisLee NetworkInterfaceState start");
