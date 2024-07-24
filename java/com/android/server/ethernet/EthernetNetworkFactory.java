@@ -143,6 +143,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
     void addInterface(String ifaceName, String hwAddress, NetworkCapabilities capabilities,
              IpConfiguration ipConfiguration) {
+        Log.i(TAG, "KrisLee addInterface, ifaceName = " + ifaceName + ", ipConfiguration = " + ipConfiguration);
+
         if (mTrackingInterfaces.containsKey(ifaceName)) {
             Log.e(TAG, "Interface with name " + ifaceName + " already exists.");
             return;
@@ -169,6 +171,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
     }
 
     private void updateCapabilityFilter() {
+        Log.i(TAG, "KrisLee updateCapabilityFilter");
+
         NetworkCapabilities capabilitiesFilter =
                 NetworkCapabilities.Builder.withoutDefaultCapabilities()
                 .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
@@ -183,6 +187,10 @@ public class EthernetNetworkFactory extends NetworkFactory {
     }
 
     void removeInterface(String interfaceName) {
+        String[] interfaces = getAvailableInterfaces(true);
+
+        Log.i(TAG, "removeInterface, interfaceName (before remove):" + interfaceName + ", interfaces: " + interfaces);
+
         NetworkInterfaceState iface = mTrackingInterfaces.remove(interfaceName);
         if (iface != null) {
             iface.stop();
@@ -200,6 +208,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (DBG) {
             Log.d(TAG, "updateInterfaceLinkState, iface: " + ifaceName + ", up: " + up);
         }
+
+        Log.i(TAG, "updateInterfaceLinkState, iface: " + ifaceName + ", up: " + up);
 
         NetworkInterfaceState iface = mTrackingInterfaces.get(ifaceName);
         return iface.updateLinkState(up);
@@ -359,6 +369,7 @@ public class EthernetNetworkFactory extends NetworkFactory {
         private static void shutdownIpClient(IIpClient ipClient) {
             try {
                 ipClient.shutdown();
+                Log.i(TAG, "KrisLee NetworkInterfaceState shutdownIpClient");
             } catch (RemoteException e) {
                 Log.e(TAG, "Error stopping IpClient", e);
             }
@@ -387,6 +398,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         }
 
         void setIpConfig(IpConfiguration ipConfig) {
+            Log.i(TAG, "KrisLee NetworkInterfaceState setIpConfig, ipConfig: " + ipConfig);
+            
             if (Objects.equals(this.mIpConfig, ipConfig)) {
                 if (DBG) Log.d(TAG, "ipConfig have not changed,so ignore setIpConfig");
                 return;
@@ -447,6 +460,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         }
 
         private void start() {
+            Log.i(TAG, "KrisLee NetworkInterfaceState start");
+
             if (mIpClient != null) {
                 if (DBG) Log.d(TAG, "IpClient already started");
                 return;
@@ -515,6 +530,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
         /** Returns true if state has been modified */
         boolean updateLinkState(boolean up) {
+            Log.i(TAG, "KrisLee NetworkInterfaceState updateLinkState");
+
             if (mLinkUp == up) return false;
             mLinkUp = up;
 
@@ -527,6 +544,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         }
 
         void stop() {
+            Log.i(TAG, "KrisLee NetworkInterfaceState stop");
+
             // Invalidate all previous start requests
             if (mIpClient != null) {
                 shutdownIpClient(mIpClient);
@@ -596,6 +615,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
         }
 
         void restart(){
+            Log.i(TAG, "KrisLee NetworkInterfaceState restart");
+
             if (DBG) Log.d(TAG, "reconnecting Etherent");
             stop();
             start();
