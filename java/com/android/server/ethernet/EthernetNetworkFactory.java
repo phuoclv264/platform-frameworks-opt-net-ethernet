@@ -198,8 +198,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
         Log.i(TAG, "removeInterface, interfaceName:" + interfaceName + ", List of all interfaces:");
 
-        for (String interfaceName : interfaces) {
-            Log.i(TAG, interfaceName);
+        for (String i : interfaces) {
+            Log.i(TAG, i);
         }
 
         Log.i(TAG, "~~~~~~~~~~~~~~~~~~~");
