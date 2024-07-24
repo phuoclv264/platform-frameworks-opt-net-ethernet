@@ -187,16 +187,22 @@ public class EthernetNetworkFactory extends NetworkFactory {
     }
 
     void removeInterface(String interfaceName) {
-        String[] interfaces = getAvailableInterfaces(true);
-
-        Log.i(TAG, "removeInterface, interfaceName (before remove):" + interfaceName + ", interfaces: " + interfaces);
-
         NetworkInterfaceState iface = mTrackingInterfaces.remove(interfaceName);
         if (iface != null) {
             iface.stop();
         }
 
         updateCapabilityFilter();
+
+        String[] interfaces = getAvailableInterfaces(true);
+
+        Log.i(TAG, "removeInterface, interfaceName:" + interfaceName + ", List of all interfaces:");
+
+        for (String interfaceName : interfaces) {
+            Log.i(TAG, interfaceName);
+        }
+
+        Log.i(TAG, "~~~~~~~~~~~~~~~~~~~");
     }
 
     /** Returns true if state has been modified */
