@@ -120,17 +120,20 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
         if (--network.refCount == 0) {
             network.stop();
-
-            String iName = network.getInterfaceName();
-
-            if (iName.contains("eth") && ++network.refCount == 1) {
-                network.start();
-
-                Log.i(TAG, "KrisLee restart network after release network, interface name: " + iName);
-            }
         }
-        
-        Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest);
+
+        try {
+            // Restart the network if the interface is eth0
+            String iName = network.getInterfaceName();
+            if ("eth0".equals(iName) && ++network.refCount == 1) {
+                network.start();
+                Log.i(TAG, "Restarted network after release for interface eth0, interface name: " + iName);
+            }
+
+            Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest);
+        } catch (Exception ex) {
+            Log.e(TAG, "releaseNetworkFor, failed to restart the network");
+        }
     }
 
     /**
@@ -475,11 +478,17 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
         String getInterfaceName() {
             if (mLinkProperties != null) {
-                return mLinkProperties.getInterfaceName();
+                String ifaceName = mLinkProperties.getInterfaceName();
+                if (ifaceName != null) {
+                    return ifaceName;
+                } else {
+                    Log.w(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned null");
+                }
+            } else {
+                Log.w(TAG, "getInterfaceName: mLinkProperties is null");
             }
-
             return "";
-        } 
+        }
 
         private void start() {
             Log.i(TAG, "KrisLee NetworkInterfaceState start");
