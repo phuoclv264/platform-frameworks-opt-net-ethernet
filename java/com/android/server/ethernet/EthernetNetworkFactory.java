@@ -118,6 +118,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
             return;
         }
 
+        Log.i(TAG, "KrisLee releaseNetworkFor network.refCount: " + network.refCount);
+
         if (--network.refCount == 0) {
             network.stop();
         }
