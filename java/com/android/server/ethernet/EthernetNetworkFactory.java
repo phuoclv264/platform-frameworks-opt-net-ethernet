@@ -106,8 +106,6 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (++network.refCount == 1) {
             network.start();
         }
-
-        Log.i(TAG, "KrisLee needNetworkFor, networkRequest: " + networkRequest);
     }
 
     @Override
@@ -118,23 +116,8 @@ public class EthernetNetworkFactory extends NetworkFactory {
             return;
         }
 
-        Log.i(TAG, "KrisLee releaseNetworkFor network.refCount: " + network.refCount);
-
         if (--network.refCount == 0) {
-            network.stop();
-        }
-
-        try {
-            // Restart the network if the interface is eth0
-            String iName = network.getInterfaceName();
-            if ("eth0".equals(iName) && ++network.refCount == 1) {
-                network.start();
-                Log.i(TAG, "Restarted network after release for interface eth0, interface name: " + iName);
-            }
-
-            Log.i(TAG, "KrisLee releaseNetworkFor, networkRequest: " + networkRequest);
-        } catch (Exception ex) {
-            Log.e(TAG, "releaseNetworkFor, failed to restart the network");
+            // network.stop();
         }
     }
 
@@ -239,7 +222,6 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (network != null) {
             network.setIpConfig(ipConfiguration);
         }
-        Log.i(TAG, "KrisLee updateIpConfiguration, iface: " + iface + ", ipConfiguration: " + ipConfiguration);
     }
 
     private NetworkInterfaceState networkForRequest(NetworkRequest request) {
@@ -413,8 +395,6 @@ public class EthernetNetworkFactory extends NetworkFactory {
         }
 
         void setIpConfig(IpConfiguration ipConfig) {
-            Log.i(TAG, "KrisLee NetworkInterfaceState setIpConfig, ipConfig: " + ipConfig);
-            
             if (Objects.equals(this.mIpConfig, ipConfig)) {
                 if (DBG) Log.d(TAG, "ipConfig have not changed,so ignore setIpConfig");
                 return;
@@ -474,21 +454,21 @@ public class EthernetNetworkFactory extends NetworkFactory {
             return 0;
         }
 
-        String getInterfaceName() {
-            if (mLinkProperties != null) {
-                String ifaceName = mLinkProperties.getInterfaceName();
-                if (ifaceName != null) {
-                    Log.i(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned " + ifaceName);
+        // String getInterfaceName() {
+        //     if (mLinkProperties != null) {
+        //         String ifaceName = mLinkProperties.getInterfaceName();
+        //         if (ifaceName != null) {
+        //             Log.i(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned " + ifaceName);
 
-                    return ifaceName;
-                } else {
-                    Log.i(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned null");
-                }
-            } else {
-                Log.i(TAG, "getInterfaceName: mLinkProperties is null");
-            }
-            return "";
-        }
+        //             return ifaceName;
+        //         } else {
+        //             Log.i(TAG, "getInterfaceName: mLinkProperties.getInterfaceName() returned null");
+        //         }
+        //     } else {
+        //         Log.i(TAG, "getInterfaceName: mLinkProperties is null");
+        //     }
+        //     return "";
+        // }
 
         private void start() {
             Log.i(TAG, "KrisLee NetworkInterfaceState start");
