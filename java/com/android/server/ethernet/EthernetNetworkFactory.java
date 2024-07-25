@@ -154,7 +154,7 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
     void addInterface(String ifaceName, String hwAddress, NetworkCapabilities capabilities,
              IpConfiguration ipConfiguration) {
-        Log.i(TAG, "KrisLee addInterface, ifaceName = " + ifaceName + ", ipConfiguration = " + ipConfiguration);
+        Log.i(TAG, "KrisLee addInterface, ifaceName = " + ifaceName + ", hwAddress = " + hwAddress + ", ipConfiguration = " + ipConfiguration);
 
         if (mTrackingInterfaces.containsKey(ifaceName)) {
             Log.e(TAG, "Interface with name " + ifaceName + " already exists.");
@@ -182,8 +182,6 @@ public class EthernetNetworkFactory extends NetworkFactory {
     }
 
     private void updateCapabilityFilter() {
-        Log.i(TAG, "KrisLee updateCapabilityFilter");
-
         NetworkCapabilities capabilitiesFilter =
                 NetworkCapabilities.Builder.withoutDefaultCapabilities()
                 .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
@@ -207,7 +205,7 @@ public class EthernetNetworkFactory extends NetworkFactory {
 
         String[] interfaces = getAvailableInterfaces(true);
 
-        Log.i(TAG, "removeInterface, interfaceName:" + interfaceName + ", List of all interfaces:");
+        Log.i(TAG, "removeInterface, interfaceName:" + interfaceName + ", List of all current interfaces:");
 
         for (String i : interfaces) {
             Log.i(TAG, i);
@@ -225,8 +223,6 @@ public class EthernetNetworkFactory extends NetworkFactory {
         if (DBG) {
             Log.d(TAG, "updateInterfaceLinkState, iface: " + ifaceName + ", up: " + up);
         }
-
-        Log.i(TAG, "updateInterfaceLinkState, iface: " + ifaceName + ", up: " + up);
 
         NetworkInterfaceState iface = mTrackingInterfaces.get(ifaceName);
         return iface.updateLinkState(up);
